@@ -22,7 +22,7 @@ class TweetController extends Controller
     public function listAction(Request $request)
     {
         // replace this example code with whatever you need
-        $tweets = $this->getDoctrine()->getManager()->getRepository(Tweet::class)->getLastTweets();
+        $tweets = $this->getDoctrine()->getManager()->getRepository(Tweet::class)->getLastTweets($this->getParameter('app.tweet.nb_last',10));
         return $this->render(':tweet:list.html.twig',array('tweets' => $tweets));
     }
 }
