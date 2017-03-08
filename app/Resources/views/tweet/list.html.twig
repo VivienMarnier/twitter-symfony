@@ -1,0 +1,26 @@
+{% extends "::base.html.twig" %}
+
+
+        {% block title 'Les derniers Tweets' %}
+
+
+        {% block header %}
+            <h1>Les derniers tweets</h1>
+        {% endblock %}
+
+        {% block content %}
+
+                {% for tweet in tweets %}
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            {{ tweet.message }}
+                        </div>
+                    </div>
+                {% else %}
+                    Aucun tweet
+                {% endfor %}
+        {% endblock %}
+
+        {% block footer %}
+            {{ parent() }}
+        {% endblock %}
