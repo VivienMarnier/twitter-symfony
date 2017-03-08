@@ -15,9 +15,9 @@ class DefaultController extends Controller
     {
         // replace this example code with whatever you need
         return $this->render(':default:index.html.twig',
-            array('name' => 'john',
-            'days' => array('monday','tuesday','wednesday','thursday','friday'),
+            ['name' => 'john',
+            'days' => ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
             'html' => '<b>ce texte n\'est pas en gras</b>',
-        ));
+        ]);
     }
 }
