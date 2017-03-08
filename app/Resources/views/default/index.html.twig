@@ -1,22 +1,24 @@
-<!DOCTYPE html>
+{% extends "::base.html.twig" %}
 
 
-<html>
-    <head>
-        <title>Symfony is awesome</title>
-    </head>
-    <body>
-        <h1>Bonjour {{ name }}, bienvenue</h1>
-    </body>
+        {% block title 'Accueil' %}
 
+
+    {% block header %}
+        <h1>Bonjour {{ name }} ! bienvenue</h1>
+    {% endblock %}
+
+    {% block content %}
     <ul>
         {% for index, day in days %}
             <li>{{ index }} : {{ day }}</li>
         {% endfor %}
     </ul>
-
     <p>{{ html }}</p>
     <p>{{ html | replace({ "n'est pas" : "est"}) | raw }}</p>
+    {% endblock %}
 
+    {% block footer %}
+    {{ parent() }}
     <a href='{{ path('app_twig_test') }}'>Lien vers la page twig</a>
-</html>
+    {% endblock %}
