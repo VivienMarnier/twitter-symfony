@@ -13,7 +13,7 @@
                 {% for tweet in tweets %}
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            {{ tweet.message }}
+                            <a href="{{ path('app_tweet_view',{'id': tweet.id}) }}">{{ tweet.message }}</a>
                         </div>
                     </div>
                 {% else %}
