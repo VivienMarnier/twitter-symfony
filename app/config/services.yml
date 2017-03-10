@@ -7,3 +7,12 @@ services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    app.tweet_manager:
+        class: AppBundle\Manager\TweetManager
+        arguments:
+              - "@=service('doctrine').getManager()"
+              - "%app.tweet.nb_last%"
+    app.email_messenger:
+        class: AppBundle\Messenger\EmailMessenger
+        arguments:
+              - "@mailer"
