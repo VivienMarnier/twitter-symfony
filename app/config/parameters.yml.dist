@@ -19,3 +19,5 @@ parameters:
     secret:            ThisTokenIsNotSoSecretChangeIt
 
     app.tweet.nb_last: 10
+    app.mailer.from: noreply-twitter@gmail.com
+    app.mailer.admin: admin@gmail.com
