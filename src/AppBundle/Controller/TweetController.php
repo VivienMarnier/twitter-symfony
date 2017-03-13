@@ -8,11 +8,14 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Favourite;
 use AppBundle\Entity\Tweet;
 use AppBundle\Form\TweetType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
 
 class TweetController extends Controller
 {
@@ -22,9 +25,7 @@ class TweetController extends Controller
     public function listAction(Request $request)
     {
         // replace this example code with whatever you need
-        $tweets = $this->getTweetManager()->getLast();
-
-        return $this->render(':tweet:list.html.twig', ['tweets' => $tweets]);
+        return $this->render(':tweet:list.html.twig', ['tweets' => $this->getTweetManager()->getLast()]);
     }
 
     /**
@@ -47,18 +48,46 @@ class TweetController extends Controller
     {
         $form = $this->createForm(TweetType::class, $this->getTweetManager()->create()); // retourne un objet Form
         $form->handleRequest($request);
-        if ($form->isValid()) {
-            $tweet = $form->getData();
-            $this->getTweetManager()->save($tweet);
-            $this->getEmailMessenger()->sendTweetCreated($tweet);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getTweetManager()->save($form->getData());
+            $this->getEmailMessenger()->sendTweetCreated($form->getData());
             $this->addFlash('success', 'Votre Tweet a été crée !');
 
-            return $this->redirectToRoute('app_tweet_view', ['id' => $tweet->getId()]);
+            return $this->redirectToRoute('app_tweet_view', ['id' => $form->getData()->getId()]);
         }
 
         return $this->render(':tweet:new.html.twig', ['form' => $form->createView()]);
     }
 
+    /**
+     * @Route("/tweet/favourite/", name="app_tweet_favourite")
+     */
+    public function favouriteAction(Request $request)
+    {
+        return $this->render(':tweet:favourite.html.twig', ['favourites' => $this->getFavouriteManager()->getFavouritesTweetByUser($this->getUser())]);
+    }
+    /**
+     * @Route("/tweet/newFavourite/", name="app_tweet_add_favourite")
+     */
+    public function addFavouriteAction(Request $request)
+    {
+
+    }
+    /**
+     * @Route("/tweet/deleteFavourite/{id}", name="app_tweet_delete_favourite")
+     * @ParamConverter("post", class="Appbundle:")
+     */
+    public function deleteFavouriteAction(Favourite $favourite)
+    {
+        //Access denied for another user trying to delete the favourite
+        if($favourite->getId() != $this->getUser()->getId())
+        {
+            $this->createAccessDeniedException();
+        }
+        $this->getFavouriteManager()->deleteFavourite($favourite);
+        return $this->redirectToRoute('app_tweet_favourite');
+
+    }
     private function getTweetManager()
     {
         return $this->get('app.tweet_manager');
@@ -67,5 +96,9 @@ class TweetController extends Controller
     private function getEmailMessenger()
     {
         return $this->get('app.email_messenger');
+    }
+    private function getFavouriteManager()
+    {
+        return $this->get('app.favourite_manager');
     }
 }

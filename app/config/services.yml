@@ -16,3 +16,9 @@ services:
         class: AppBundle\Messenger\EmailMessenger
         arguments:
               - "@mailer"
+              - %app.mailer.from%
+              - %app.mailer.admin%
+    app.favourite_manager:
+        class: AppBundle\Manager\FavouriteManager
+        arguments:
+               - "@=service('doctrine').getManager()"

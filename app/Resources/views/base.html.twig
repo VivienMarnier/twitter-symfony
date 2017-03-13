@@ -17,6 +17,13 @@
                 <li><a href="{{ path('app_tweet_list') }}">Derniers Tweets</a></li>
                 <li><a href="{{ path('app_tweet_new') }}">Poster un Tweet</a></li>
                 <li><a href="{{ path('app_twig_test') }}">Twig Test</a></li>
+                {% if is_granted('ROLE_USER') %}
+                <li><a href="{{ path('app_tweet_favourite') }}">Tweets favoris</a></li>
+                <li><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
+                {% else %}
+                <li><a href="{{ path('fos_user_registration_register') }}">Je m'inscris</a></li>
+                <li><a href="{{ path('fos_user_security_login') }}">Je me connecte</a></li>
+                {% endif %}
             </ul>
         </div>
     </div>
